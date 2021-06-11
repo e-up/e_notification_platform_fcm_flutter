@@ -23,21 +23,22 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
   StreamController<String> _tokenController = StreamController();
 
   @override
-  late Stream<ENotificationMessage> backgroundNotificationMessageStream;
+  Stream<ENotificationMessage> backgroundNotificationMessageStream;
 
   @override
-  late Stream<ENotificationMessage> notificationMessageStream;
+  Stream<ENotificationMessage> notificationMessageStream;
 
   @override
-  late Stream<ENotificationMessage> notificationClickedStream;
+  Stream<ENotificationMessage> notificationClickedStream;
 
   @override
-  late Stream<String> tokenStream;
+  Stream<String> tokenStream;
 
-  late String _deviceId;
+  String _deviceId;
 
   ENotificationMessage toENotification(RemoteMessage event) {
-    RemoteNotification notification = event.notification!;
+    RemoteNotification notification = event.notification;
+    if (notification == null) return null;
     return ENotificationMessage(
         id: "${event.messageId}",
         title: notification.title ?? '',
@@ -57,16 +58,22 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
     FirebaseMessaging.onBackgroundMessage(_onBackgroundMessage);
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      _notificationClickedController.sink.add(toENotification(event));
+      var message = toENotification(event);
+      if (message == null) return;
+      _notificationClickedController.sink.add(message);
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      _notificationMessageController.sink.add(toENotification(event));
+      var message = toENotification(event);
+      if (message == null) return;
+      _notificationMessageController.sink.add(message);
     });
 
     FirebaseMessaging.instance.getInitialMessage().then((value) {
       if (value == null) return;
-      _notificationMessageController.sink.add(toENotification(value));
+      var message = toENotification(value);
+      if (message == null) return;
+      _notificationMessageController.sink.add(message);
     });
 
     await FirebaseMessaging.instance.requestPermission(
