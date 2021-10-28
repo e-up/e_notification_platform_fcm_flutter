@@ -23,16 +23,19 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
   StreamController<String> _tokenController = StreamController();
 
   @override
-  late Stream<ENotificationMessage> backgroundNotificationMessageStream;
+  Stream<ENotificationMessage> get backgroundNotificationMessageStream =>
+      _backgroundNotificationMessageController.stream;
 
   @override
-  late Stream<ENotificationMessage> notificationMessageStream;
+  Stream<ENotificationMessage> get notificationMessageStream =>
+      _notificationMessageController.stream;
 
   @override
-  late Stream<ENotificationMessage> notificationClickedStream;
+  Stream<ENotificationMessage> get notificationClickedStream =>
+      _notificationClickedController.stream;
 
   @override
-  late Stream<String> tokenStream;
+  Stream<String> get tokenStream => _tokenController.stream;
 
   late String _deviceId;
 
@@ -49,12 +52,6 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
 
   @override
   Future<void> init(Map<String, dynamic> params) async {
-    backgroundNotificationMessageStream =
-        _backgroundNotificationMessageController.stream;
-    notificationMessageStream = _notificationMessageController.stream;
-    notificationClickedStream = _notificationClickedController.stream;
-    tokenStream = _tokenController.stream;
-
     await Firebase.initializeApp();
 
     FirebaseMessaging.onBackgroundMessage(_onBackgroundMessage);
