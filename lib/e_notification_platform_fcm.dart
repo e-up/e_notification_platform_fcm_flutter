@@ -23,26 +23,28 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
   StreamController<String> _tokenController = StreamController();
 
   @override
-  Stream<ENotificationMessage> backgroundNotificationMessageStream;
+  late Stream<ENotificationMessage> backgroundNotificationMessageStream;
 
   @override
-  Stream<ENotificationMessage> notificationMessageStream;
+  late Stream<ENotificationMessage> notificationMessageStream;
 
   @override
-  Stream<ENotificationMessage> notificationClickedStream;
+  late Stream<ENotificationMessage> notificationClickedStream;
 
   @override
-  Stream<String> tokenStream;
+  late Stream<String> tokenStream;
 
-  String _deviceId;
+  late String _deviceId;
 
-  ENotificationMessage toENotification(RemoteMessage event) {
-    RemoteNotification notification = event.notification;
+  ENotificationMessage? toENotification(RemoteMessage event) {
+    RemoteNotification? notification = event.notification;
     if (notification == null) return null;
     return ENotificationMessage(
-        id: "${event.messageId}",
-        title: notification.title ?? '',
-        message: notification.body ?? '');
+      id: "${event.messageId}",
+      title: notification.title ?? '',
+      message: notification.body ?? '',
+      payload: event.data,
+    );
   }
 
   @override
