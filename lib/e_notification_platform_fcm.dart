@@ -134,8 +134,6 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
 
   @override
   Future<void> unsubscribeAll() async {
-    this.subscriptions.forEach((element) {
-      this.unsubscribe(element);
-    });
+    await Future.wait(this.subscriptions.map((e) => this.unsubscribe(e)));
   }
 }
