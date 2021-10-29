@@ -118,6 +118,7 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
 
   @override
   Future<void> subscribe(String topic) async {
+    if (subscriptions.contains(topic)) return;
     FirebaseMessaging.instance
         .subscribeToTopic(topic)
         .then((value) => subscriptions.add(topic))
