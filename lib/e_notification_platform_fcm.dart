@@ -1,6 +1,7 @@
 library e_notification_platform_fcm;
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:e_notification_platform_interface/e_notification_platform_interface.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +39,8 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
   Stream<String> get tokenStream => _tokenController.stream;
 
   late String _deviceId;
+
+  final List<String> subscriptions = [];
 
   ENotificationMessage? toENotification(RemoteMessage event) {
     RemoteNotification? notification = event.notification;
@@ -94,6 +97,10 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
 
     _deviceId = await FirebaseMessaging.instance.getToken() ?? '';
     _tokenController.sink.add(_deviceId);
+
+    /// 把之前订阅的主题都移除掉
+    subscriptions
+        .map((e) => FirebaseMessaging.instance.unsubscribeFromTopic(e));
   }
 
   @override
@@ -111,11 +118,17 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
 
   @override
   Future<void> subscribe(String topic) async {
-    FirebaseMessaging.instance.subscribeToTopic(topic);
+    FirebaseMessaging.instance
+        .subscribeToTopic(topic)
+        .then((value) => subscriptions.add(topic))
+        .then((value) => log('subscribe : $topic'));
   }
 
   @override
   Future<void> unsubscribe(String topic) {
-    return FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+    return FirebaseMessaging.instance
+        .unsubscribeFromTopic(topic)
+        .then((value) => subscriptions.remove(topic))
+        .then((value) => log('unsubscribe : $topic'));
   }
 }
