@@ -131,4 +131,11 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
         .then((value) => subscriptions.remove(topic))
         .then((value) => log('unsubscribe : $topic'));
   }
+
+  @override
+  Future<void> unsubscribeAll() async {
+    this.subscriptions.forEach((element) {
+      this.unsubscribe(element);
+    });
+  }
 }
