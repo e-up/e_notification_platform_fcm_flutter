@@ -50,6 +50,7 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
       title: notification.title ?? '',
       message: notification.body ?? '',
       payload: event.data,
+      time: event.sentTime?.millisecondsSinceEpoch ?? 0,
     );
   }
 
