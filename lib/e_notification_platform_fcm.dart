@@ -13,15 +13,15 @@ Future<FirebaseApp> _onBackgroundMessage(RemoteMessage message) async {
 
 class ENotificationPlatformFCM extends ENotificationPlatformInterface {
   StreamController<ENotificationMessage>
-      _backgroundNotificationMessageController = StreamController();
+      _backgroundNotificationMessageController = StreamController.broadcast();
 
   StreamController<ENotificationMessage> _notificationMessageController =
-      StreamController();
+      StreamController.broadcast();
 
   StreamController<ENotificationMessage> _notificationClickedController =
-      StreamController();
+      StreamController.broadcast();
 
-  StreamController<String> _tokenController = StreamController();
+  StreamController<String> _tokenController = StreamController.broadcast();
 
   @override
   Stream<ENotificationMessage> get backgroundNotificationMessageStream =>
