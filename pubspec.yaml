@@ -1,6 +1,6 @@
 name: e_notification_platform_fcm
 description: A new Flutter project.
-version: 1.2.0
+version: 1.2.1
 homepage: https://iamee.me
 
 environment:

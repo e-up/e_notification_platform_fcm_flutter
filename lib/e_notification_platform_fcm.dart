@@ -72,13 +72,6 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
       _notificationMessageController.sink.add(message);
     });
 
-    FirebaseMessaging.instance.getInitialMessage().then((value) {
-      if (value == null) return;
-      var message = toENotification(value);
-      if (message == null) return;
-      _notificationMessageController.sink.add(message);
-    });
-
     await FirebaseMessaging.instance.requestPermission(
         alert: true,
         announcement: true,
