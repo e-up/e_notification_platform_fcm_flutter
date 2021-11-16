@@ -98,6 +98,15 @@ class ENotificationPlatformFCM extends ENotificationPlatformInterface {
   }
 
   @override
+  Future<ENotificationMessage?> getInitialMessage() async {
+    final message = await FirebaseMessaging.instance.getInitialMessage();
+    if(message!=null){
+      return toENotification(message);
+    }
+    return null;
+  }
+
+  @override
   Future<void> close() async {
     _notificationClickedController.close();
     _backgroundNotificationMessageController.close();

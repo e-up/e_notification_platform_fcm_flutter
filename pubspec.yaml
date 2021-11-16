@@ -1,6 +1,6 @@
 name: e_notification_platform_fcm
 description: A new Flutter project.
-version: 1.2.3
+version: 1.3.1
 homepage: https://iamee.me
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  e_notification_platform_interface: 1.2.0
+  e_notification_platform_interface: 1.3.1
   firebase_core: 1.10.0
   firebase_messaging: 11.1.0
 
